@@ -1,3 +1,5 @@
+require( "eslint-plugin-only-warn" );
+
 module.exports = {
   env: {
     browser: true,
@@ -14,18 +16,19 @@ module.exports = {
   rules: {
     "no-plusplus": "off",
     "linebreak-style": "off",
-    "object-curly-spacing": [ "error", "always" ],
-    "array-bracket-spacing": [ "error", "always" ],
-    "computed-property-spacing": [ "error", "always" ],
-    "block-spacing": [ "error", "always" ],
-    "space-in-parens": [ "error", "always" ],
+    "object-curly-spacing": [ "warn", "always" ],
+    "array-bracket-spacing": [ "warn", "always" ],
+    "computed-property-spacing": [ "warn", "always" ],
+    "block-spacing": [ "warn", "always" ],
+    "space-in-parens": [ "warn", "always" ],
 
     // use double quotes
-    quotes: [ "error", "double" ],
+    quotes: [ "warn", "double" ],
     
-    "no-else-return": "error",
+    "no-else-return": "warn",
 
     // use semicolons
 
   },
+
 };
