@@ -9,7 +9,7 @@ let ratio = window.devicePixelRatio ?? 1;
  root.height = window.innerHeight * ratio;
 
 let listener = new PointerListener( root, {
-  smooth: 10
+  smooth: 5
 } );
 const ctx = root.getContext( "2d" );
 
@@ -49,6 +49,7 @@ listener.addEventListener( "dragend", ( event ) => {
 } );
 
 listener.addEventListener( "drag", ( event ) => {
+  
 
   // ctx.fillStyle = "rgba( 255,255,255, 0.1 )";
   
@@ -59,6 +60,9 @@ listener.addEventListener( "drag", ( event ) => {
   let pointers = event.pointers ?? [];
 
   for ( let pointer of pointers ) {
+
+    // pointer capture
+    root.setPointerCapture( pointer.id );
 
 let color = getColor( pointer.id + colorOffset );
     ctx.fillStyle = color
