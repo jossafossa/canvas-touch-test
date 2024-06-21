@@ -10,7 +10,7 @@ let ratio = window.devicePixelRatio ?? 1;
  root.height = window.innerHeight * ratio;
 
 let listener = new PointerListener( root, {
-  smooth: 10
+  smooth: 5
 } );
 const ctx = root.getContext( "2d" );
 
