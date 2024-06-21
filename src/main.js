@@ -3,8 +3,11 @@ import "./style.scss"
 import PointerListener from "./PointerListener.ts";
 
 let root = document.querySelector( "#root" );
- root.width = window.innerWidth;
- root.height = window.innerHeight;
+let ratio = window.devicePixelRatio ?? 1;
+
+ root.width = window.innerWidth * ratio;
+ root.height = window.innerHeight * ratio;
+
 let listener = new PointerListener( root, {
   smooth: 10
 } );
@@ -61,7 +64,7 @@ let color = getColor( pointer.id + colorOffset );
     ctx.fillStyle = color
 
     ctx.beginPath();
-    ctx.arc( pointer.x, pointer.y, pointer.size, 0, Math.PI * 2 );
+    ctx.arc( pointer.x * ratio, pointer.y * ratio, pointer.size * ratio, 0, Math.PI * 2 );
     ctx.fill();
     ctx.closePath();
 
@@ -69,10 +72,10 @@ let color = getColor( pointer.id + colorOffset );
 
     if ( lastPoint ) {
       ctx.strokeStyle = color;
-      ctx.lineWidth = pointer.size * 2;
+      ctx.lineWidth = pointer.size * 2 * ratio;
       ctx.beginPath();
-      ctx.moveTo( lastPoint.x, lastPoint.y );
-      ctx.lineTo( pointer.x, pointer.y );
+      ctx.moveTo( lastPoint.x * ratio, lastPoint.y * ratio );
+      ctx.lineTo( pointer.x * ratio, pointer.y * ratio );
       ctx.stroke();
       ctx.closePath();
     }
