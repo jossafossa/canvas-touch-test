@@ -36,18 +36,31 @@ export class SmoothVectorBuffer {
     this.buffers = new Map();
     this.size = size;
     this.attributes = attributes;
+    this.previous = null;
 
     for (let attribute of attributes) {
       this.buffers.set(attribute, new SmoothBuffer(size));
     }
   }
 
-  smooth(all) {
+  smooth(all, speed = true) {
     const copy = { ...all };
 
     for (let attribute of this.attributes) {
       copy[attribute] = this.buffers.get(attribute).smooth(all[attribute]);
     }
+
+    if (speed && this.previous) {
+      let dist = 0;
+      for (let attribute of this.attributes) {
+        dist += Math.pow(copy[attribute] - this.previous[attribute], 2);
+      }
+      copy.speed = Math.sqrt(dist);
+    } else {
+      copy.speed = 0;
+    }
+
+    this.previous = { ...copy };
 
     return copy;
   }

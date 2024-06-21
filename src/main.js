@@ -79,14 +79,15 @@ listener.addEventListener( "dragend", ( event ) => {
  * @param {number} space Space between the points in px
  * @returns {CustomPointerEvent[]}
  */
-const getIntermediatePoints = ( p1, p2, space = 2 ) => {
+const getIntermediatePoints = ( p1, p2, space = 10 ) => {
   let points = [];
   let dx = p2.x - p1.x;
   let dy = p2.y - p1.y;
   let distance = Math.sqrt( dx ** 2 + dy ** 2 );
   let angle = Math.atan2( dy, dx );
 
-  let steps = Math.floor( distance / space );
+  let steps = Math.round( distance / space );
+  console.log( { steps } );
 
   for ( let i = 0; i < steps; i++ ) {
     let x = p1.x + Math.cos( angle ) * i * space;
@@ -102,6 +103,7 @@ const getIntermediatePoints = ( p1, p2, space = 2 ) => {
 }
 
 const draw = ( event )  => {
+
   
 
     // ctx.fillStyle = "rgba( 255,255,255, 0.1 )";
@@ -113,12 +115,15 @@ const draw = ( event )  => {
     let pointers = event.pointers ?? [];
   
     for ( let pointer of pointers ) {
-  
+
       // pointer capture
       root.setPointerCapture( pointer.id );
   
   let color = getColor( pointer.id + colorOffset );
       ctx.fillStyle = color
+
+      console.log( pointer.size, pointer.speed ); 
+      // pointer.size = pointer.size + pointer.speed / 3;
 
       let lastPoint = lastPoints.get( pointer.id );
 

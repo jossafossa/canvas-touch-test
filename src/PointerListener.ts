@@ -49,10 +49,6 @@ export default class PointerListener extends EventTarget {
       this.dispatchEvent(this.event);
     });
 
-   
-    
-
-    
     this.loop();
   }
 
