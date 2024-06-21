@@ -2,6 +2,7 @@ type CustomPointer = {
   id: number;
   x: number;
   y: number;
+  size: number;
 }
 
 export default class CustomPointerEvent extends Event {
@@ -12,20 +13,23 @@ export default class CustomPointerEvent extends Event {
 
     this.pointers = [];
 
-    if (event.type === 'pointerdrag') {
-      this.pointerDrag(event);
+    let eventType = event.type ?? 'drag';
+
+
+    if (eventType === 'drag') {
+      this.drag(event);
     }
 
-    if (event.type === 'pointermove') {
+    if (eventType === 'pointermove') {
       this.pointerMove(event);
     }
 
-    if (event.type === 'touchmove') {
+    if (eventType === 'touchmove') {
       this.touchMove(event);
     }
   }
 
-  private pointerDrag(event) {
+  private drag(event) {
     this.pointers = event.pointers;
   }
 
@@ -34,7 +38,8 @@ export default class CustomPointerEvent extends Event {
     this.pointers.push({
       id: event.pointerId,
       x: event.clientX,
-      y: event.clientY
+      y: event.clientY,
+      size: 10
     })
   }
 
@@ -42,11 +47,12 @@ export default class CustomPointerEvent extends Event {
     
     for (let i = 0; i < event.touches.length; i++) {
       let pointer = event.touches[i];
-      console.log(pointer)
+      console.log(pointer);
       this.pointers.push({
         id: pointer.identifier,
         x: pointer.clientX,
-        y: pointer.clientY
+        y: pointer.clientY,
+        size: (pointer.radiusX + pointer.radiusY ) * pointer.force / 2 
       });
     }
   }

@@ -16,12 +16,13 @@ export default class MouseListener extends EventTarget {
     });
 
     this.root.addEventListener('pointerup', (event) => {
+      this.dispatchEvent(new CustomPointerEvent('dragend', {pointers: []}));
       this.isDragging = false;
     });
 
     this.root.addEventListener('pointermove', (event) => {
       if (!this.isDragging) return;
-      this.dispatchEvent(new CustomPointerEvent('pointerdrag', event));
+      this.dispatchEvent(new CustomPointerEvent('drag', event));
     });
 
 
