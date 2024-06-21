@@ -16,11 +16,11 @@ export default class CustomPointerEvent extends Event {
     let eventType = event.type ?? 'drag';
 
 
-    if (eventType === 'drag') {
+    if ([ 'drag', 'dragstart', 'dragend'].includes(eventType)) {
       this.drag(event);
     }
 
-    if (eventType === 'pointermove') {
+    if (['pointermove', 'pointerdown'].includes(eventType)) {
       this.pointerMove(event);
     }
 

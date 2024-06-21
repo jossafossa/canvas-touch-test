@@ -36,6 +36,12 @@ export default class PointerListener extends EventTarget {
       this.mouseListener,
       this.touchListener
     ].forEach(listener => {
+
+      listener.addEventListener('dragstart', (event) => {
+        this.event = event;
+        this.dispatchEvent(new CustomPointerEvent('dragstart', event));
+      });
+
       listener.addEventListener('drag', (event) => {
         this.event = event;
       });

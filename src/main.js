@@ -78,57 +78,43 @@ const getIntermediatePoints = ( p1, p2, space = 2 ) => {
   return points;
 }
 
-
-listener.addEventListener( "drag", ( event ) => {
+const draw = ( event )  => {
   
 
-  // ctx.fillStyle = "rgba( 255,255,255, 0.1 )";
-  
-  // clear the canvas
-  // ctx.fillRect( 0, 0, root.width, root.height );
-
-
-  let pointers = event.pointers ?? [];
-
-  for ( let pointer of pointers ) {
-
-    // pointer capture
-    root.setPointerCapture( pointer.id );
-
-let color = getColor( pointer.id + colorOffset );
-    ctx.fillStyle = color
-
-    let intermediatePoints = getIntermediatePoints( lastPoints.get( pointer.id ) ?? pointer, pointer );
-
-    console.log( intermediatePoints );
-
-    for ( let p of intermediatePoints ) {
-      ctx.beginPath();
-      ctx.arc( p.x * ratio, p.y * ratio, p.size * ratio, 0, Math.PI * 2 );
-      ctx.fill();
-      ctx.closePath();
-    }
-
-    // ctx.beginPath();
-    // ctx.arc( pointer.x * ratio, pointer.y * ratio, pointer.size * ratio, 0, Math.PI * 2 );
-    // ctx.fill();
-    // ctx.closePath();
-
-    // let lastPoint = lastPoints.get( pointer.id );
-
-    // if ( lastPoint ) {
-    //   const lineWidth = Math.min( pointer.size, lastPoint.size );
-
-    //   ctx.strokeStyle = color;
-    //   ctx.lineWidth = lineWidth * 2 * ratio;
-    //   ctx.beginPath();
-    //   ctx.moveTo( lastPoint.x * ratio, lastPoint.y * ratio );
-    //   ctx.lineTo( pointer.x * ratio, pointer.y * ratio );
-    //   ctx.stroke();
-    //   ctx.closePath();
-    // }
+    // ctx.fillStyle = "rgba( 255,255,255, 0.1 )";
     
-    lastPoints.set( pointer.id, pointer );
-  }
+    // clear the canvas
+    // ctx.fillRect( 0, 0, root.width, root.height );
   
-} );
+  
+    let pointers = event.pointers ?? [];
+  
+    for ( let pointer of pointers ) {
+  
+      // pointer capture
+      root.setPointerCapture( pointer.id );
+  
+  let color = getColor( pointer.id + colorOffset );
+      ctx.fillStyle = color
+
+      let lastPoint = lastPoints.get( pointer.id );
+
+      let pointers = [ pointer ];
+      if ( lastPoint ) {
+        pointers = getIntermediatePoints( lastPoint, pointer );
+      }
+  
+      for ( let p of pointers ) {
+        ctx.beginPath();
+        ctx.arc( p.x * ratio, p.y * ratio, p.size * ratio, 0, Math.PI * 2 );
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      lastPoints.set( pointer.id, pointer );
+    }
+    
+}
+
+
+[ "drag", "dragstart" ].forEach( event => listener.addEventListener( event, draw ) );

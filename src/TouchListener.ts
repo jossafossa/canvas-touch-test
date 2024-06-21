@@ -14,5 +14,9 @@ export default class TouchListener extends EventTarget {
     this.root.addEventListener( 'touchend', (event) => {
       this.dispatchEvent(new CustomPointerEvent('dragend', event));
     });
+
+    this.root.addEventListener( 'touchstart', (event) => {
+      this.dispatchEvent(new CustomPointerEvent('dragstart', event));
+    });
   }
 }
