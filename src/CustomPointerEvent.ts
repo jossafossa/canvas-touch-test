@@ -20,11 +20,11 @@ export default class CustomPointerEvent extends Event {
       this.drag(event);
     }
 
-    if (['pointermove', 'pointerdown'].includes(eventType)) {
+    if (['pointermove', 'pointerdown', 'pointerup'].includes(eventType)) {
       this.pointerMove(event);
     }
 
-    if (eventType === 'touchmove') {
+    if (['touchmove', 'touchstart', 'touchend'].includes(eventType)){
       this.touchMove(event);
     }
   }
@@ -52,7 +52,7 @@ export default class CustomPointerEvent extends Event {
         id: pointer.identifier,
         x: pointer.clientX,
         y: pointer.clientY,
-        size: (pointer.radiusX + pointer.radiusY ) * pointer.force / 2 ,
+        size: pointer.force  * 20 ,
       });
     }
   }

@@ -32,25 +32,21 @@ export default class PointerListener extends EventTarget {
     this.touchListener = new TouchListener(this.root);
     this.mouseListener = new MouseListener(this.root);
 
-    [
-      this.mouseListener,
-      this.touchListener
-    ].forEach(listener => {
+    let listener = this.isTouch() ? this.touchListener : this.mouseListener;
 
-      listener.addEventListener('dragstart', (event) => {
-        this.event = event;
-        this.dispatchEvent(new CustomPointerEvent('dragstart', event));
-      });
+    listener.addEventListener('dragstart', (event) => {
+      this.event = event;
+      this.dispatchEvent(new CustomPointerEvent('dragstart', event));
+    });
 
-      listener.addEventListener('drag', (event) => {
-        this.event = event;
-      });
+    listener.addEventListener('drag', (event) => {
+      this.event = event;
+    });
 
-      listener.addEventListener('dragend', () => {
-        this.buffers.clear();
-        this.event = new CustomPointerEvent('dragend', {pointers: []});
-        this.dispatchEvent(this.event);
-      });
+    listener.addEventListener('dragend', () => {
+      this.buffers.clear();
+      this.event = new CustomPointerEvent('dragend', {pointers: []});
+      this.dispatchEvent(this.event);
     });
 
    
@@ -58,6 +54,12 @@ export default class PointerListener extends EventTarget {
 
     
     this.loop();
+  }
+
+isTouch() {
+    return (('ontouchstart' in window) ||
+       (navigator.maxTouchPoints > 0) ||
+       (navigator.msMaxTouchPoints > 0));
   }
 
   loop() {

@@ -10,6 +10,31 @@
     <title>Vite App</title>
   </head>
   <body>
+    <form action="" method="get">
+      <input type="checkbox" id="form-button">
+      <table>
+        <tr>
+          <td>
+            smoothing
+          </td>
+          <td>
+            <input id="smoothing" name="smoothing" type="range" min="1" max="40" value="5">
+            <output for="smoothing"></output>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            intermediate dots per
+          </td>
+          <td>
+            <input id="dots" name="dots" type="range" min="1" max="10" value="2">
+            <output for="dots" suffix="px"></output>
+          </td>
+        </tr>
+
+      </table>
+      <button>Update</button>
+    </form>
     <canvas id="root"></canvas>
     <script type="module" src="/src/main.js"></script>
   </body>

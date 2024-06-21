@@ -8,10 +8,35 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
     <title>Vite App</title>
-    <script type="module" crossorigin src="/assets/index-RfxZs_gL.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-DNo5nMUF.css">
+    <script type="module" crossorigin src="/assets/index-B4L05ew6.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BVoauLMh.css">
   </head>
   <body>
+    <form action="" method="get">
+      <input type="checkbox" id="form-button">
+      <table>
+        <tr>
+          <td>
+            smoothing
+          </td>
+          <td>
+            <input id="smoothing" name="smoothing" type="range" min="1" max="40" value="5">
+            <output for="smoothing"></output>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            intermediate dots per
+          </td>
+          <td>
+            <input id="dots" name="dots" type="range" min="1" max="10" value="2">
+            <output for="dots" suffix="px"></output>
+          </td>
+        </tr>
+
+      </table>
+      <button>Update</button>
+    </form>
     <canvas id="root"></canvas>
   </body>
 </html>

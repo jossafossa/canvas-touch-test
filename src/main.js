@@ -3,6 +3,18 @@ import "./style.scss"
 import PointerListener from "./PointerListener.ts";
 import CustomPointerEvent from "./CustomPointerEvent.ts";
 
+
+const setValues = ( params ) => {
+  params = Object.fromEntries( params.entries() );
+  for ( let key in params ) {
+    let input = document.querySelector( `[name="${key}"]` );
+    console.log( { key, input } )
+    if ( input ) {
+      input.value = params[ key ];
+    }
+  }
+};
+
 let root = document.querySelector( "#root" );
 let ratio = window.devicePixelRatio ?? 1;
 
@@ -10,9 +22,18 @@ let ratio = window.devicePixelRatio ?? 1;
  root.height = window.innerHeight * ratio;
  root.style.height = window.innerHeight + "px";
   root.style.width = window.innerWidth + "px";
+  let params = new URLSearchParams( window.location.search );
+  setValues( params );
+  
+  let smooth = params.get( "smoothing" )  ?? 5;
+  let dots =  params.get( "dots" )  ?? 2;
+  dots = parseInt( dots );
+  smooth = parseInt( smooth );
+
+
 
 let listener = new PointerListener( root, {
-  smooth: 5
+  smooth
 } );
 const ctx = root.getContext( "2d" );
 
@@ -103,7 +124,7 @@ const draw = ( event )  => {
 
       let pointers = [ pointer ];
       if ( lastPoint ) {
-        pointers = getIntermediatePoints( lastPoint, pointer );
+        pointers = getIntermediatePoints( lastPoint, pointer, dots );
       }
   
       for ( let p of pointers ) {
@@ -120,3 +141,15 @@ const draw = ( event )  => {
 
 
 [ "drag", "dragstart" ].forEach( event => listener.addEventListener( event, draw ) );
+
+
+// outputs update their value with the value of the input they are connected to
+const outputs = document.querySelectorAll( "output" );
+for ( let output of outputs ) {
+  let input = document.querySelector( "#" + output.htmlFor );
+  let suffix = output.getAttribute( "suffix" ) ?? "";
+  output.value = input.value + suffix;
+  input.addEventListener( "input", () => {
+    output.value = input.value + suffix;
+  } );
+}
