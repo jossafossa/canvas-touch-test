@@ -8,6 +8,8 @@ let ratio = window.devicePixelRatio ?? 1;
 
  root.width = window.innerWidth * ratio;
  root.height = window.innerHeight * ratio;
+ root.style.height = window.innerHeight + "px";
+  root.style.width = window.innerWidth + "px";
 
 let listener = new PointerListener( root, {
   smooth: 5
