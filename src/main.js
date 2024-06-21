@@ -1,6 +1,7 @@
 import "./style.scss"
 
 import PointerListener from "./PointerListener.ts";
+import CustomPointerEvent from "./CustomPointerEvent.ts";
 
 let root = document.querySelector( "#root" );
 let ratio = window.devicePixelRatio ?? 1;
@@ -48,6 +49,36 @@ listener.addEventListener( "dragend", ( event ) => {
   colorOffset++;
 } );
 
+/**
+ * 
+ * @param {CustomPointerEvent} p1 
+ * @param {CustomPointerEvent} p2 
+ * @param {number} space Space between the points in px
+ * @returns {CustomPointerEvent[]}
+ */
+const getIntermediatePoints = ( p1, p2, space = 2 ) => {
+  let points = [];
+  let dx = p2.x - p1.x;
+  let dy = p2.y - p1.y;
+  let distance = Math.sqrt( dx ** 2 + dy ** 2 );
+  let angle = Math.atan2( dy, dx );
+
+  let steps = Math.floor( distance / space );
+
+  for ( let i = 0; i < steps; i++ ) {
+    let x = p1.x + Math.cos( angle ) * i * space;
+    let y = p1.y + Math.sin( angle ) * i * space;
+    let size = p1.size + ( p2.size - p1.size ) * ( i / steps );
+
+    points.push( {
+      x, y, size
+    } );
+  }
+
+  return points;
+}
+
+
 listener.addEventListener( "drag", ( event ) => {
   
 
@@ -67,22 +98,35 @@ listener.addEventListener( "drag", ( event ) => {
 let color = getColor( pointer.id + colorOffset );
     ctx.fillStyle = color
 
-    ctx.beginPath();
-    ctx.arc( pointer.x * ratio, pointer.y * ratio, pointer.size * ratio, 0, Math.PI * 2 );
-    ctx.fill();
-    ctx.closePath();
+    let intermediatePoints = getIntermediatePoints( lastPoints.get( pointer.id ) ?? pointer, pointer );
 
-    let lastPoint = lastPoints.get( pointer.id );
+    console.log( intermediatePoints );
 
-    if ( lastPoint ) {
-      ctx.strokeStyle = color;
-      ctx.lineWidth = pointer.size * 2 * ratio;
+    for ( let p of intermediatePoints ) {
       ctx.beginPath();
-      ctx.moveTo( lastPoint.x * ratio, lastPoint.y * ratio );
-      ctx.lineTo( pointer.x * ratio, pointer.y * ratio );
-      ctx.stroke();
+      ctx.arc( p.x * ratio, p.y * ratio, p.size * ratio, 0, Math.PI * 2 );
+      ctx.fill();
       ctx.closePath();
     }
+
+    // ctx.beginPath();
+    // ctx.arc( pointer.x * ratio, pointer.y * ratio, pointer.size * ratio, 0, Math.PI * 2 );
+    // ctx.fill();
+    // ctx.closePath();
+
+    // let lastPoint = lastPoints.get( pointer.id );
+
+    // if ( lastPoint ) {
+    //   const lineWidth = Math.min( pointer.size, lastPoint.size );
+
+    //   ctx.strokeStyle = color;
+    //   ctx.lineWidth = lineWidth * 2 * ratio;
+    //   ctx.beginPath();
+    //   ctx.moveTo( lastPoint.x * ratio, lastPoint.y * ratio );
+    //   ctx.lineTo( pointer.x * ratio, pointer.y * ratio );
+    //   ctx.stroke();
+    //   ctx.closePath();
+    // }
     
     lastPoints.set( pointer.id, pointer );
   }
