@@ -52,7 +52,7 @@ export default class CustomPointerEvent extends Event {
         id: pointer.identifier,
         x: pointer.clientX,
         y: pointer.clientY,
-        size: (pointer.radiusX + pointer.radiusY ) * pointer.force / 2 
+        size: (pointer.radiusX + pointer.radiusY ) * pointer.force / 2 ,
       });
     }
   }
